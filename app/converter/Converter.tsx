@@ -15,6 +15,9 @@ const Converter = () => {
   const [input1, setInput1] = useState(EXAMPLE1);
   const [input2, setInput2] = useState(EXAMPLE2);
   const [output, setOutput] = useState("");
+  const [countInput1, setCountInput1] = useState(0);
+  const [countInput2, setCountInput2] = useState(0);
+  const [countOutput, setCountOutput] = useState(0);
   const onChangeInput1: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setInput1(e.target.value);
   };
@@ -33,8 +36,14 @@ const Converter = () => {
     () => [...input2.matchAll(regex)].map((match) => match[0]),
     [input2]
   );
+
   useEffect(() => {
     const ids = [...new Set([...ids1, ...ids2])];
+
+    setCountInput1(ids1.length);
+    setCountInput2(ids2.length);
+    setCountOutput(ids.length);
+
     const contents = ids
       .map(
         (id) =>
@@ -56,7 +65,10 @@ ${contents}
   return (
     <div className={styles.root}>
       <div className={styles.inputTextAreasContainer}>
-        <h2>Input 1</h2>
+        <span className={styles.headerTitle}>
+          <h2>Input 1</h2>
+          <span>{countInput1}</span>
+        </span>
         <div className={styles.inputTextAreaContainer}>
           <textarea
             className={styles.inputTextArea}
@@ -64,7 +76,10 @@ ${contents}
             onChange={onChangeInput1}
           ></textarea>
         </div>
-        <h2>Input 2</h2>
+        <span className={styles.headerTitle}>
+          <h2>Input 2</h2>
+          <span>{countInput2}</span>
+        </span>
         <div className={styles.inputTextAreaContainer}>
           <textarea
             className={styles.inputTextArea}
@@ -74,7 +89,10 @@ ${contents}
         </div>
       </div>
       <div className={styles.outputTextAreaContainer}>
-        <h2>Output</h2>
+        <span className={styles.headerTitle}>
+          <h2>Output</h2>
+          <span>{countOutput}</span>
+        </span>
         <textarea
           className={styles.outputTextArea}
           value={output}
